@@ -5,6 +5,11 @@
 set -e
 set -x
 
+ARCH=aarch64
+MVMJ=4.4
+MVMN=16
+UVER=1604-${MVMJ}.${MVMN}
+
 function config(){
   export CLIENT_IP_ADDR=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}' | tail -1`
   export CLIENT_FQDN=`hostname`
@@ -17,11 +22,11 @@ function config(){
 
 function install_mongod(){
   echo "Install MongoDB Enterprise"
-  wget -q -O mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2.tgz https://downloads.mongodb.com/linux/mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2.tgz?jmp=university
-  tar xvf mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2.tgz
-  sudo mv -f mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2/bin/* /usr/bin
-  rm -r mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2/
-  rm mongodb-linux-x86_64-enterprise-ubuntu1404-3.4.2.tgz
+  wget -q -O mongodb-linux-${ARCH}-enterprise-ubuntu${UVER}.tgz https://downloads.mongodb.com/linux/mongodb-linux-aarch64-enterprise-ubuntu${UVER}.tgz?jmp=university
+  tar xvf mongodb-linux-${ARCH}-enterprise-ubuntu${UVER}.tgz
+  sudo mv -f mongodb-linux-${ARCH}-enterprise-ubuntu${UVER}/bin/* /usr/bin
+  rm -r mongodb-linux-${ARCH}-enterprise-ubuntu${UVER}/
+  rm mongodb-linux-${ARCH}-enterprise-ubuntu${UVER}.tgz
 
   sudo sh -c "killall mongod; true"
   sudo sh -c "sudo su;"
@@ -38,9 +43,10 @@ function install_mongod(){
 }
 
 function install_updated_python(){
+    sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+    sudo apt-get update
     sudo apt-get install -y build-essential checkinstall
     sudo apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libffi-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev -y
-    sudo apt-get install -y wget
     sudo apt-get build-dep python2.7 -y
     wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
     sudo tar xzf Python-2.7.18.tgz
@@ -50,6 +56,7 @@ function install_updated_python(){
     sudo make install
     cd ..
     sudo ln -fs /usr/local/bin/python /usr/bin/python
+    sudo apt-get install curl -y
     curl -o get-pip.py https://bootstrap.pypa.io/pip/2.6/get-pip.py
     sudo python get-pip.py
     sudo pip install --upgrade pip
@@ -71,7 +78,7 @@ function install_python_dependencies(){
 
 function update_repo(){
   echo "Install MongoDB Enterprise Repository"
-  echo "deb http://repo.mongodb.com/apt/ubuntu "$(lsb_release -sc)"/mongodb-enterprise/3.3 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-enterprise.list
+  echo "deb http://repo.mongodb.com/apt/ubuntu "$(lsb_release -sc)"/mongodb-enterprise/${MVMJ} multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-enterprise.list
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
   echo "Update Repositoryies"
   sudo apt-get update -y
@@ -81,12 +88,17 @@ function update_repo(){
 
 
 function config(){
-  sudo su
+  apt-get update -y
+  apt-get install -y sudo
+  apt-get install -y lsb-release
+  sudo apt-get install -y wget
+  sudo addgroup vagrant
+  sudo useradd -m -d /home/vagrant -g vagrant -G sudo vagrant
   # disable THP
-  echo -e "never" > /sys/kernel/mm/transparent_hugepage/enabled
-  echo -e "never" > /sys/kernel/mm/transparent_hugepage/defrag
+  sudo echo -e "never" > /sys/kernel/mm/transparent_hugepage/enabled
+  sudo echo -e "never" > /sys/kernel/mm/transparent_hugepage/defrag
   # disable mongod upstart service
-  echo 'manual' | sudo tee /etc/init/mongod.override
+  sudo echo 'manual' | sudo tee /etc/init/mongod.override
 }
 
 
@@ -95,4 +107,5 @@ update_repo
 install_mongod
 install_updated_python
 install_python_dependencies
+apt-get clean all
 echo "DONE"
