@@ -52,6 +52,7 @@ function install_mongod(){
 
 function config(){
   apt-get update -y
+  apt-get install --reinstall tzdata
   apt-get install -y wget
   # disable THP
   echo -e "never" > /sys/kernel/mm/transparent_hugepage/enabled

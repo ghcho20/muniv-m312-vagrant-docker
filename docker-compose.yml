@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+  m312:
+    image: arm64v8/ubuntu:16.04
+    container_name: m312
+    hostname: m312.mongodb.university
+    volumes:
+      - ./provision-m312:/root/provision-m312
+      - ./shared:/shared
+      - ./dataset:/dataset
+    networks:
+      bridge:
+        ipv4_address: 192.168.14.100
+    ports:
+      - 30000:30000
+      - 30001:30001
+      - 30002:30002
+    environment:
+      - TZ=${TIMEZONE}
+    privileged: true
+    entrypoint: bash -c "/root/provision-m312 && sleep infinity"
+
+networks:
+  bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.14.0/24
