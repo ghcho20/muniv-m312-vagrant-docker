@@ -3,3 +3,4 @@ dataset/
 shared/
 
 .env
+.DS_store

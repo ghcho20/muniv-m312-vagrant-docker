@@ -7,6 +7,7 @@ services:
     hostname: m312.mongodb.university
     volumes:
       - ./provision-m312:/root/provision-m312
+      - ./requirements.txt:/root/requirements.txt
       - ./shared:/shared
       - ./dataset:/dataset
     networks:
