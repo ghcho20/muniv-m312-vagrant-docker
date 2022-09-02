@@ -34,3 +34,9 @@ DONE
 ### Resume
 
 `docker-compose unpause`
+
+### Storage
+
+`/home/vagrant` is set for general lab environments but subfolders need to be created according to mongod cfg file per each lab scenario.
+
+Lab 2.1 for example, `/home/vagrant/data` should exist to run `mongod -f single.cfg`

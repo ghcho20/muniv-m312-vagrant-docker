@@ -54,6 +54,8 @@ function config(){
   echo -e "never" > /sys/kernel/mm/transparent_hugepage/defrag
   # disable mongod upstart service
   echo 'manual' | tee /etc/init/mongod.override
+  # mongod path
+  mkdir -p /home/vagrant
 }
 
 
