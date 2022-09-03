@@ -4,6 +4,9 @@ MongoDB University M312 lab virtual environment for M1 Apple silicon:
 
 > vagrant/virtualbox > docker
 
+- Ubuntu 16.04 arm64
+- MongoDB 4.2 arm64 : `mtools` cannot handle new json log files that's been instituted since v4.4
+
 ## Requisites
 
 - docker

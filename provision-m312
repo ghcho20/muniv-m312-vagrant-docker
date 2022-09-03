@@ -34,8 +34,8 @@ function install_python_dependencies(){
 
 function install_mongod(){
   echo "Install MongoDB Enterprise Repository"
-  wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
-  echo "deb [ arch=amd64,arm64,s390x ] http://repo.mongodb.com/apt/ubuntu xenial/mongodb-enterprise/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-enterprise.list
+  wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
+  echo "deb [ arch=amd64,arm64,s390x ] http://repo.mongodb.com/apt/ubuntu xenial/mongodb-enterprise/4.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-enterprise.list
   echo "Update Repositoryies"
   apt-get update -y
 
