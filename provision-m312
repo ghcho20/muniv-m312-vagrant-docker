@@ -58,10 +58,23 @@ function config(){
   mkdir -p /home/vagrant
 }
 
+function install_mgeneratejs() {
+  apt-get install curl -y
+  curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+  bash nodesource_setup.sh
+  apt-get install nodejs -y
+  npm install -g npm@latest
+  node -v
+  npm -v
+  npm install -g mgeneratejs
+  rm nodesource_setup.sh
+}
+
 
 config
 install_mongod
 install_updated_python
 install_python_dependencies
+install_mgeneratejs
 apt-get clean all
 echo "DONE"
