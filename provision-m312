@@ -16,20 +16,12 @@ function config(){
 }
 
 function install_updated_python(){
-    apt-get install python2.7 -y
-    ln -fs /usr/bin/python2.7 /usr/bin/python
-    apt-get install curl libcurl3 -y
-    curl -o get-pip.py https://bootstrap.pypa.io/pip/2.7/get-pip.py
-    python get-pip.py
-    pip install --upgrade pip
-    rm get-pip.py
+  apt install -y python2.7 python-pip
 }
 
-function install_python_dependencies(){
-    apt-get install -y python-dev
-    apt-get install -y libfreetype6-dev pkg-config libpng12-dev
-
-    pip install -r /root/requirements.txt
+function install_mtools(){
+  apt install -y python-matplotlib python-psutil
+  pip install mtools==1.5.3 pymongo==3.6.1
 }
 
 function install_mongod(){
@@ -70,11 +62,16 @@ function install_mgeneratejs() {
   rm nodesource_setup.sh
 }
 
+function install_xwindow() {
+  # to render mplotlib
+  apt-get install -y xorg
+}
 
 config
 install_mongod
+install_xwindow
 install_updated_python
-install_python_dependencies
+install_mtools
 install_mgeneratejs
 apt-get clean all
 echo "DONE"

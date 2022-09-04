@@ -59,3 +59,23 @@ e.g.
 ```
 mgeneratejs /shared/schema.json -n 100 | mongoimport --drop -c=mgencol -d=m312 -h=localhost:30000
 ```
+
+### mtools/mplotqueries
+
+`mplotqueries` requies X11 render matplotlib so the host machine needs Xwindow server.
+
+[`XQuartz`](https://www.xquartz.org) (>=2.7.11) supports M1 Apple silicon.
+
+#### Install
+
+> `brew install socat` (instead ssh)
+>
+> `brew install --cask xquartz`
+>
+> > You must log out and back in to effect installation
+
+#### Run
+
+> `open -a XQuartz`
+>
+> `socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"`
