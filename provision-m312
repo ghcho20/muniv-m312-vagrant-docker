@@ -21,7 +21,7 @@ function install_updated_python(){
 
 function install_mtools(){
   apt install -y python-matplotlib python-psutil
-  pip install mtools==1.5.3 pymongo==3.6.1
+  pip install mtools==1.5.3 pymongo==3.6.1 docopt
 }
 
 function install_mongod(){
