@@ -19,6 +19,7 @@ services:
     environment:
       - TZ=${TIMEZONE}
       - DISPLAY=host.docker.internal:0
+      - DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration
     privileged: true
     entrypoint: bash -c "/root/provision-m312 && sleep infinity"
 
