@@ -68,7 +68,7 @@ mgeneratejs /shared/schema.json -n 100 | mongoimport --drop -c=mgencol -d=m312 -
 
 #### Install
 
-> `brew install socat` (instead ssh)
+> `brew install socat` (instead of ssh)
 >
 > `brew install --cask xquartz`
 >
@@ -79,3 +79,31 @@ mgeneratejs /shared/schema.json -n 100 | mongoimport --drop -c=mgencol -d=m312 -
 > `open -a XQuartz`
 >
 > `socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"`
+
+## Heads-up
+
+### Ch3 Response time degradation, Part1 - Cache use
+
+`mongostat` keeps showing up to 80% cache use even after wiredTiger cache is increased to 2G.
+
+![serverStatus](img/ch3_cache_serverStatus.png "serverStatus - wiredTigerCache")
+![mongostat](img/ch3_cache_mongostat.png "mongostat - wiredTigerCache")
+
+Thus, showing poor write performance
+
+![writeLatency](img/ch3_cache_wlatency.png "serverStatus - write latency")
+
+### Ch3 Lab, Building FG index
+
+The shell script for setup, `set_up_building_index_in_foreground.sh` does not work out of the box because
+
+- mlaunch ip binding option(`localhost`)
+- mongoimport host option(`m312`)
+
+do not match.
+
+To run the script, either must be corrected.
+
+- add `--ip_bind_all` option to `mlaunch` commandline
+- or use `localhost` instead of `m312` for `mongoimport` host option.<br>
+  ie. `mongoimport --host m312RS/localhost:30000,...`
