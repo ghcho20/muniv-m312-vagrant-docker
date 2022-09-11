@@ -104,6 +104,6 @@ do not match.
 
 To run the script, either must be corrected.
 
-- add `--ip_bind_all` option to `mlaunch` commandline
+- add `--bind_ip_all` option to `mlaunch` commandline
 - or use `localhost` instead of `m312` for `mongoimport` host option.<br>
   ie. `mongoimport --host m312RS/localhost:30000,...`
