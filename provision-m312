@@ -40,7 +40,7 @@ function install_mongod(){
 function config(){
   apt-get update -y
   apt-get install --reinstall tzdata
-  apt-get install -y wget
+  apt-get install -y wget psmisc
   # disable THP
   echo -e "never" > /sys/kernel/mm/transparent_hugepage/enabled
   echo -e "never" > /sys/kernel/mm/transparent_hugepage/defrag
