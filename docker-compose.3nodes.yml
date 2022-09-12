@@ -1,0 +1,63 @@
+version: "3.5"
+
+services:
+  m1:
+    image: arm64v8/ubuntu:16.04
+    container_name: m1
+    hostname: m1.mongodb.university
+    volumes:
+      - ./provision-m312:/root/provision-m312
+      - ./shared:/shared
+      - ./dataset:/dataset
+    networks:
+      3net:
+        ipv4_address: 192.168.15.101
+    environment:
+      - TZ=${TIMEZONE}
+      - DISPLAY=host.docker.internal:0
+      - DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration
+    privileged: true
+    entrypoint: bash -c "/root/provision-m312 && sleep infinity"
+
+  m2:
+    image: arm64v8/ubuntu:16.04
+    container_name: m2
+    hostname: m2.mongodb.university
+    volumes:
+      - ./provision-m312:/root/provision-m312
+      - ./shared:/shared
+      - ./dataset:/dataset
+    networks:
+      3net:
+        ipv4_address: 192.168.15.102
+    environment:
+      - TZ=${TIMEZONE}
+      - DISPLAY=host.docker.internal:0
+      - DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration
+    privileged: true
+    entrypoint: bash -c "/root/provision-m312 && sleep infinity"
+
+  m3:
+    image: arm64v8/ubuntu:16.04
+    container_name: m3
+    hostname: m3.mongodb.university
+    volumes:
+      - ./provision-m312:/root/provision-m312
+      - ./shared:/shared
+      - ./dataset:/dataset
+    networks:
+      3net:
+        ipv4_address: 192.168.15.103
+    environment:
+      - TZ=${TIMEZONE}
+      - DISPLAY=host.docker.internal:0
+      - DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration
+    privileged: true
+    entrypoint: bash -c "/root/provision-m312 && sleep infinity"
+
+networks:
+  3net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.15.0/24

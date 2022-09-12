@@ -80,6 +80,22 @@ mgeneratejs /shared/schema.json -n 100 | mongoimport --drop -c=mgencol -d=m312 -
 >
 > `socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"`
 
+### 3-node test environment
+
+Some lectures like `Ch4 Hostnames and Cluster Configuration` requires 3-node network topology.
+
+Use `docker-compose.3nodes.yml` instead of the default compose file.
+
+> Note:
+>
+> - Docker containers can resolve container name or FQDN set by the compose file.
+>
+>   So, use different name for replicaset configuration from container/host names set by the compose file.
+>
+>   And accordingly, edit `/etc/hosts` file following the lecture
+>
+> - Because `mongod` instances are running on different nodes, `bindIpAll` must be set in `mongod.cnf` file for distributed nodes
+
 ## Heads-up
 
 ### Ch3 Response time degradation, Part1 - Cache use
@@ -104,6 +120,6 @@ do not match.
 
 To run the script, either must be corrected.
 
-- add `--bind_ip_all` option to `mlaunch` commandline
+- use `--bind_ip_all` option
 - or use `localhost` instead of `m312` for `mongoimport` host option.<br>
   ie. `mongoimport --host m312RS/localhost:30000,...`
