@@ -98,6 +98,13 @@ Use `docker-compose.3nodes.yml` instead of the default compose file.
 
 ## Heads-up
 
+### Container resources
+
+Container resource constraint is critical for some lab tests.
+
+- memory: `<= 2G`
+- no. of cpu: `<= 2`
+
 ### Ch3 Response time degradation, Part1 - Cache use
 
 `mongostat` keeps showing up to 80% cache use even after wiredTiger cache is increased to 2G.
